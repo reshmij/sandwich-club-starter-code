@@ -1,5 +1,6 @@
 package com.udacity.sandwichclub.utils;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.udacity.sandwichclub.model.Sandwich;
@@ -61,26 +62,12 @@ public class JsonUtils {
 
 
     static void printSandwichData(Sandwich sandwich){
+
         Log.d(TAG, "Main Name: "+sandwich.getMainName());
-
-        StringBuilder alsoKnownAsSb = new StringBuilder();
-        for(String s: sandwich.getAlsoKnownAs()){
-            alsoKnownAsSb.append(s);
-        }
-        Log.d(TAG, "Also known as: "+alsoKnownAsSb.toString());
-
-
+        Log.d(TAG, "Also known as: "+ TextUtils.join(",", sandwich.getAlsoKnownAs()));
         Log.d(TAG, "Place of Origin: "+sandwich.getPlaceOfOrigin());
-
-
-        StringBuilder ingredientSb = new StringBuilder();
-        for(String s: sandwich.getIngredients()){
-            ingredientSb.append(s).append(",");
-        }
-        Log.d(TAG, "Ingredients: "+ ingredientSb.toString());
-
+        Log.d(TAG, "Ingredients: "+ TextUtils.join(",", sandwich.getIngredients()));
         Log.d(TAG, "Description: "+sandwich.getDescription());
         Log.d(TAG, "Image: "+sandwich.getImage());
-
     }
 }
