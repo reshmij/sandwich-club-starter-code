@@ -30,27 +30,44 @@ public class JsonUtils {
             Sandwich sandwich = new Sandwich();
 
             JSONObject sandwichJson = new JSONObject(json);
-            JSONObject sandwichNameJson = sandwichJson.getJSONObject(SANDWICH_NAME);
 
-            sandwich.setMainName(sandwichNameJson.getString(SANDWICH_MAIN_NAME));
+            //Get the name json object
+            JSONObject sandwichNameJson = sandwichJson.optJSONObject(SANDWICH_NAME);
+            if(sandwichNameJson!=null) {
+                
+                //Get the main name
+                sandwich.setMainName(sandwichNameJson.optString(SANDWICH_MAIN_NAME));
 
-            JSONArray alsoKnownJson = sandwichNameJson.getJSONArray(SANDWICH_ALSO_KNOWN_AS);
-            List<String> alsoKnownNames = new ArrayList<>(alsoKnownJson.length());
-            for(int i=0; i< alsoKnownJson.length(); i++){
-                alsoKnownNames.add(alsoKnownJson.getString(i));
+                //Get the also known name list
+                JSONArray alsoKnownJson = sandwichNameJson.optJSONArray(SANDWICH_ALSO_KNOWN_AS);
+                if (alsoKnownJson != null) {
+                    List<String> alsoKnownNames = new ArrayList<>(alsoKnownJson.length());
+                    for (int i = 0; i < alsoKnownJson.length(); i++) {
+                        alsoKnownNames.add(alsoKnownJson.optString(i));
+                    }
+                    sandwich.setAlsoKnownAs(alsoKnownNames);
+                }
             }
-            sandwich.setAlsoKnownAs(alsoKnownNames);
 
-            sandwich.setDescription(sandwichJson.getString(SANDWICH_DESCRIPTION));
-            sandwich.setImage(sandwichJson.getString(SANDWICH_IMAGE));
-            sandwich.setPlaceOfOrigin(sandwichJson.getString(SANDWICH_PLACE_OF_ORIGIN));
+            //Get description
+            sandwich.setDescription(sandwichJson.optString(SANDWICH_DESCRIPTION));
 
-            JSONArray ingredientsJson = sandwichJson.getJSONArray(SANDWICH_INGREDIENTS);
-            List<String> ingredients = new ArrayList<>(ingredientsJson.length());
-            for(int i=0; i< ingredientsJson.length(); i++){
-                ingredients.add(ingredientsJson.getString(i));
+            //Get image
+            sandwich.setImage(sandwichJson.optString(SANDWICH_IMAGE));
+
+            //Get place of origin
+            sandwich.setPlaceOfOrigin(sandwichJson.optString(SANDWICH_PLACE_OF_ORIGIN));
+
+            //Get ingredient list
+            JSONArray ingredientsJson = sandwichJson.optJSONArray(SANDWICH_INGREDIENTS);
+            if(ingredientsJson!=null) {
+                List<String> ingredients = new ArrayList<>(ingredientsJson.length());
+                for (int i = 0; i < ingredientsJson.length(); i++) {
+                    ingredients.add(ingredientsJson.optString(i));
+                }
+                sandwich.setIngredients(ingredients);
             }
-            sandwich.setIngredients(ingredients);
+
             printSandwichData(sandwich);
             return sandwich;
 
